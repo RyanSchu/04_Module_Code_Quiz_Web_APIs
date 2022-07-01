@@ -29,6 +29,7 @@ THEN I can save my initials and my score
 ### Pseudocode - js
 
 ```
+should also have a an init function that initializes the page with the start button content
 
 #WHEN I click the start butto
 start buttonn - this will actually be a div with clickable boxes internally to match the mockup, not separate button elements but will be referrred to as buttons
@@ -55,6 +56,6 @@ if question == final question then triggerGameOver function
 game over function should change the content to the game over content including submit form
 submit form should store initials and corresponding scores in local storage
 
-
+The acceptance criteria doesn't actually say anything about the high score display - we will save this phase for last but we generally want another button with an event listener that triggers 
 
 ```
