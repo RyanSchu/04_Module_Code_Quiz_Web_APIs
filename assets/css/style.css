@@ -1,0 +1,13 @@
+:root{
+    --dark-blue: #240046;
+    --purple: #5A189A;
+    --mid-purple: #7B2CBF;
+    --light-purple: #9D4EDD;
+}
+
+/* restyle some basic elements after reset */
+h1 {
+    font-size: 7rem;
+  }
+
+
