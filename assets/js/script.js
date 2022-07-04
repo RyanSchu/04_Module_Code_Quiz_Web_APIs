@@ -2,7 +2,7 @@
 // get the card element which will store the question contents
 var card = document.querySelector(".card")
 var index = 0
-
+var startScore = 0
 // first lets define a class of objects called questions
 class Question {
     constructor(title, question, choices, solution,isStart,buttonContent) {
@@ -65,7 +65,6 @@ function renderChoices(card,question) {
         label.setAttribute("for", "choice" + i)
         label.textContent = question.choices[i]
         choiceForm.appendChild(label)
-
     }
     card.appendChild(choiceForm)
     return
@@ -80,9 +79,13 @@ function renderButton(card,question) {
         cardButton.addEventListener("click",function(){
             renderScoreboard(card)
         })
-        card.appendChild(cardButton)
+    } else if (question.buttonContent === "Start Quiz"){
+        cardButton.addEventListener("click",function(){
+            renderCard(card,questions[index])
+        }) 
     } else {
         cardButton.addEventListener("click",function(){
+            scoreQuestion(questions[index])
             renderCard(card,questions[index])
         })
     }
@@ -90,8 +93,23 @@ function renderButton(card,question) {
     return
 }
 
-// Need function to show the high scores page
+// need function to check that question is filled out
 
+
+// function to score questions
+// this will be attached to the button event listener
+function scoreQuestion(question){
+    let answer =  document.querySelector("input:checked")
+    if (answer.getAttribute('value') === question.solution) {
+        startScore++
+    }
+}
+
+// function to record scores on finish
+
+// function to reset current score on finish
+
+// Need function to show the high scores page
 function renderScoreboard(card) {
     card.innerHTML = ''
     scoreBoard = document.createElement("ol")
@@ -117,6 +135,7 @@ function padScores(array,content=null,length) {
     }
     return array
 }
+
 
 
 // store questions in objects and objects in an array
