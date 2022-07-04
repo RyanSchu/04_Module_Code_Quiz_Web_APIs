@@ -30,6 +30,7 @@ function renderCard(card,question) {
     }
     renderTitle(card,question)
     renderQuestion(card,question)
+    renderChoices(card,question)
     renderButton(card,question)
     card.setAttribute("data-index",index)
     index++
@@ -50,6 +51,26 @@ function renderQuestion(card,question) {
     card.appendChild(questionHeader)
     return
 }
+
+function renderChoices(card,question) {
+    let choiceForm = document.createElement("form")
+    for (i = 0; i < question.choices.length; i++){
+        let choice = document.createElement("input")
+        choice.setAttribute("type","radio")
+        choice.setAttribute("name","choice")
+        choice.setAttribute("id","choice" + i)
+        choice.setAttribute("value",question.choices[i])
+        choiceForm.appendChild(choice)
+        let label = document.createElement("label")
+        label.setAttribute("for", "choice" + i)
+        label.textContent = question.choices[i]
+        choiceForm.appendChild(label)
+
+    }
+    card.appendChild(choiceForm)
+    return
+}
+
 
 function renderButton(card,question) {
     let cardButton = document.createElement("button")
@@ -75,8 +96,9 @@ function renderScoreboard(card) {
     card.innerHTML = ''
     scoreBoard = document.createElement("ol")
     
-    let scores = localStorage.getItem()(scores)
+    let scores = localStorage.getItem("scores")
     scores.sort((a, b) => (a.score - b.score))
+
     if (scores.length < 10) {
         scores = padScores()
     }
@@ -100,7 +122,7 @@ function padScores(array,content=null,length) {
 // store questions in objects and objects in an array
 // will consider the welcome page a special case of question for the purposes of easy rendering
 var questions = [
-    new Question(title="",question="Welcome to the quiz",choices=[],solution="",isStart=true,buttonContent="Start Quiz"),
+    new Question(title="",question="Welcome to the quiz",choices=[],solution=null,isStart=true,buttonContent="Start Quiz"),
     new Question(title="Question 1/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
     new Question(title="Question 2/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
     new Question(title="Question 3/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
