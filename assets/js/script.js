@@ -1,52 +1,81 @@
 // first select relevant elements
 // get the card element which will store the question contents
 var card = document.querySelector(".card")
+var index = 0
 
 // first lets define a class of objects called questions
 class Question {
-    constructor(title, question, choices, solution, values) {
-        if (!(choices.includes(solution))) {
-            console.log(solution, choices)
-            console.log("invalid input, solution must exist in choices")
-            return
+    constructor(title, question, choices, solution,isStart,buttonContent) {
+        if (!isStart) {
+            if (!choices.includes(solution)){
+                console.log("choices must include solution")
+                return
+            }
         }
         this.title = title
         this.question = question
         this.choices = choices
         this.solution = solution
-        this.values = values
+        this.isStart = isStart
+        this.buttonContent = buttonContent
+
     }
 }
 
-// first we want to initialize the card with a welcome page and start button
-// we could alternatively store the welcome greeting inside the array of questions
-// but i would rather keep it a separate process since a welcome page lacks any kind of content and could have a different solution
-function initializeCard(card) {
-    console.log(card)
-    console.log("run")
-    let cardHeader = document.createElement("h2")
-    cardHeader.setAttribute("class","card-header")
-    cardHeader.textContent = "Welcome to the quiz"
-    card.appendChild(cardHeader)
-    let cardButton = document.createElement("button")
-    cardButton.setAttribute("id", "startButton")
-    cardButton.textContent = "Start Quiz"
-    card.appendChild(cardButton)
+// this function adds the content to the page each time the continue button is clicked
+function renderCard(card,question) {
+    if(index !== 0 ){
+        console.log(index)
+        card.innerHTML = ''
+    }
+    renderTitle(card,question)
+    renderQuestion(card,question)
+    renderButton(card,question)
+    card.setAttribute("data-index",index)
+    index++
+    return
+}   
 
+function renderTitle(card,question) {
+    let cardHeader = document.createElement("h3")
+    cardHeader.textContent = question.title
+    card.appendChild(cardHeader)
+    return
+}
+
+function renderQuestion(card,question) {
+    let questionHeader = document.createElement("h2")
+    questionHeader.setAttribute("class","card-header")
+    questionHeader.textContent = question.question
+    card.appendChild(questionHeader)
+    return
+}
+
+function renderButton(card,question) {
+    let cardButton = document.createElement("button")
+    cardButton.setAttribute("class", "quizButton")
+    cardButton.textContent = question.buttonContent
+    cardButton.addEventListener("click",function(){
+        renderCard(card,questions[index])
+    })
+    card.appendChild(cardButton)
+    return
 }
 
 
+
+
+
+
 // store questions in objects and objects in an array
+// will consider the welcome page a special case of question for the purposes of easy rendering
 var questions = [
-    new Question(title="Question 1/5",question="",choices=["A","B","C","D"],solution="A"),
-    new Question(title="Question 2/5",question="",choices=["A","B","C","D"],solution="A"),
-    new Question(title="Question 3/5",question="",choices=["A","B","C","D"],solution="A"),
-    new Question(title="Question 4/5",question="",choices=["A","B","C","D"],solution="A"),
-    new Question(title="Question 5/5",question="",choices=["A","B","C","D"],solution="A")
+    new Question(title="",question="Welcome to the quiz",choices=[],solution="",isStart=true,buttonContent="Start Quiz"),
+    new Question(title="Question 1/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 2/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 3/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 4/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 5/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Finish Quiz")
 ]
 
-initializeCard(card) 
-
-
-
-
+renderCard(card,questions[0]) 
