@@ -55,16 +55,46 @@ function renderButton(card,question) {
     let cardButton = document.createElement("button")
     cardButton.setAttribute("class", "quizButton")
     cardButton.textContent = question.buttonContent
-    cardButton.addEventListener("click",function(){
-        renderCard(card,questions[index])
-    })
+    if (question.buttonContent === "Finish Quiz") {
+        cardButton.addEventListener("click",function(){
+            renderScoreboard(card)
+        })
+        card.appendChild(cardButton)
+    } else {
+        cardButton.addEventListener("click",function(){
+            renderCard(card,questions[index])
+        })
+    }
     card.appendChild(cardButton)
     return
 }
 
+// Need function to show the high scores page
 
+function renderScoreboard(card) {
+    card.innerHTML = ''
+    scoreBoard = document.createElement("ol")
+    
+    let scores = localStorage.getItem()(scores)
+    scores.sort((a, b) => (a.score - b.score))
+    if (scores.length < 10) {
+        scores = padScores()
+    }
+    // code to grab 
+    for (i =0; i < 10; i++){
+        item = document.createElement("li")
+        item.textContent = scores[i] 
+        scoreBoard.appendChild(item)
+    }
+    card.appendChild(scoreBoard)
+}
 
-
+function padScores(array,content=null,length) {
+    for (i = 0 ; i < length; i++){
+        array.push(content)
+    }
+    return array
+}
 
 
 // store questions in objects and objects in an array
