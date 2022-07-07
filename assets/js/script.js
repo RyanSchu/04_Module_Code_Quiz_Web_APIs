@@ -155,26 +155,14 @@ function renderScoreboard(card) {
     
     let scores = JSON.parse(localStorage.getItem("scores"))
     scores.sort((a, b) => (a.score - b.score))
-    if (!scores) {
-        scores=[]
-    }
-    if (scores.length < 10) {
-        scores = padScores(scores)
-    }
     // code to grab 
-    for (i =0; i < 10; i++){
+    for (i =0; i < scores.length; i++){
+        console.log(scores[i])
         item = document.createElement("li")
-        item.textContent = scores[i] 
+        item.textContent = scores[i].name  + " "  + scores[i].score
         scoreBoard.appendChild(item)
     }
     card.appendChild(scoreBoard)
-}
-
-function padScores(array,content=null,length) {
-    for (i = 0 ; i < length; i++){
-        array.push(content)
-    }
-    return array
 }
 
 
