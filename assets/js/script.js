@@ -40,10 +40,10 @@ function renderCard(card,question) {
     renderTitle(card,question)
     renderQuestion(card,question)
     renderChoices(card,question)
-    let timerID = renderButton(card,question)
+    renderButton(card,question)
     card.setAttribute("data-index",index)
     index++
-    return timerID
+    return
 }   
 
 function renderTitle(card,question) {
@@ -85,16 +85,15 @@ function renderButton(card,question) {
     cardButton.setAttribute("class", "quizButton")
     cardButton.textContent = question.buttonContent
     if (question.buttonContent === "Start Quiz"){
-        let timerID = startTimer()
+        
         cardButton.addEventListener("click",function(){
             renderCard(card,questions[index])
+            startTimer()
         }) 
-        card.appendChild(cardButton)
-        return timerID
     } else if (question.buttonContent === "Finish Quiz") {
         cardButton.addEventListener("click",function(){
             renderScoreForm(card)
-            clearInterval(timerID)
+            stopTimer(timerID)
         })
     } else {
         cardButton.addEventListener("click",function(){
@@ -180,12 +179,14 @@ function startTimer() {
             recordScore()
             renderScoreboard(card)
         }
-    },
-    1000)
-    return timeInterval
+    },1000)
+    timer.setAttribute("timerID",timeInterval)
+    return
 }
 
-
+function stopTimer() {
+    clearInterval(parseInt(timer.getAttribute('timerID')))
+}
 
 // store questions in objects and objects in an array
 // will consider the welcome page a special case of question for the purposes of easy rendering
