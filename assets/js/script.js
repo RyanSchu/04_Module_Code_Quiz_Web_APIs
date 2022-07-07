@@ -165,9 +165,9 @@ function renderScoreboard(card) {
         startTimer()
     })
     let scoreBoard = document.createElement("ol")
-    
+    scoreBoard.setAttribute("type","1")
     let scores = JSON.parse(localStorage.getItem("scores"))
-    scores.sort((a, b) => (a.score - b.score))
+    scores.sort((a, b) => (b.score - a.score))
     // code to grab 
     for (i =0; i < scores.length; i++){
         // console.log(scores[i])
@@ -180,6 +180,7 @@ function renderScoreboard(card) {
 }
 
 function startTimer() {
+    let timeLeft = 80
     let timeInterval = setInterval(function() {
         timeLeft--
         timer.textContent = "Timer: " + timeLeft
@@ -189,7 +190,6 @@ function startTimer() {
         }
     },1000)
     timer.setAttribute("timerID",timeInterval)
-    return
 }
 
 function stopTimer() {
