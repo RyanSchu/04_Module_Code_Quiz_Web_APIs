@@ -157,7 +157,14 @@ function recordScore() {
 // Need function to show the high scores page
 function renderScoreboard(card) {
     card.innerHTML = ''
-    scoreBoard = document.createElement("ol")
+    let resetButton = document.createElement("button")
+    resetButton.textContent = "Retake Quiz"
+    resetButton.addEventListener("click",function() {
+        index=1
+        renderCard(card,questions[index])
+        startTimer()
+    })
+    let scoreBoard = document.createElement("ol")
     
     let scores = JSON.parse(localStorage.getItem("scores"))
     scores.sort((a, b) => (a.score - b.score))
@@ -168,6 +175,7 @@ function renderScoreboard(card) {
         item.textContent = scores[i].name  + " "  + scores[i].score
         scoreBoard.appendChild(item)
     }
+    card.appendChild(resetButton)
     card.appendChild(scoreBoard)
 }
 
