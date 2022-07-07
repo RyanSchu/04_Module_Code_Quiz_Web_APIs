@@ -22,10 +22,18 @@ class Question {
     }
 }
 
+// class to record scores
+class Score {
+    constructor(name, score) {
+        this.name = name
+        this.score = score
+    }
+}
+
 // this function adds the content to the page each time the continue button is clicked
 function renderCard(card,question) {
     if(index !== 0 ){
-        console.log(index)
+        // console.log(index)
         card.innerHTML = ''
     }
     renderTitle(card,question)
@@ -77,7 +85,7 @@ function renderButton(card,question) {
     cardButton.textContent = question.buttonContent
     if (question.buttonContent === "Finish Quiz") {
         cardButton.addEventListener("click",function(){
-            renderScoreboard(card)
+            renderScoreForm(card)
         })
     } else if (question.buttonContent === "Start Quiz"){
         cardButton.addEventListener("click",function(){
@@ -105,8 +113,39 @@ function scoreQuestion(question){
     }
 }
 
-// function to record scores on finish
+// create score tracker element
+function renderScoreForm(card) {
+    card.innerHTML = ''
+    let scoreForm = document.createElement("form")
+    let label = document.createElement("label")
+    let nameInput = document.createElement("input")
+    let submitButton = document.createElement("button")
+    submitButton.textContent = "Submit & View High Scores"
+    nameInput.setAttribute("type","text")
+    nameInput.setAttribute("id","name-input")
+    label.textContent = "Name:"
+    label.appendChild(nameInput)
+    scoreForm.appendChild(label)
+    scoreForm.appendChild(submitButton)
+    card.appendChild(scoreForm)
+    scoreForm.addEventListener("submit",function() {
+        event.preventDefault()
+        recordScore()
+        renderScoreboard(card)
+    })
+}
 
+// function to record scores on finish
+function recordScore() {
+    let scores = JSON.parse(localStorage.getItem("scores"))
+    if (!scores) {
+        scores=[]
+    }
+    let inputName = document.querySelector("#name-input").value
+    let currentScore = new Score(name=inputName,score=startScore)
+    scores.push(currentScore)
+    localStorage.setItem("scores",JSON.stringify(scores))
+}
 // function to reset current score on finish
 
 // Need function to show the high scores page
@@ -114,11 +153,13 @@ function renderScoreboard(card) {
     card.innerHTML = ''
     scoreBoard = document.createElement("ol")
     
-    let scores = localStorage.getItem("scores")
+    let scores = JSON.parse(localStorage.getItem("scores"))
     scores.sort((a, b) => (a.score - b.score))
-
+    if (!scores) {
+        scores=[]
+    }
     if (scores.length < 10) {
-        scores = padScores()
+        scores = padScores(scores)
     }
     // code to grab 
     for (i =0; i < 10; i++){
