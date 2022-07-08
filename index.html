@@ -5,34 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-    <header>
-        <h1>
-            Pop Quiz
-        </h1>
-        <nav>
-            <button class="toggle-scores">
-                View High Scores
-            </button>
-            <p class="timer"></p>
-        </nav>
-    </header>
-    <main id="super-container">
-        <aside></aside>
-        <div class="card">
-            <header class="card-header">
-
-            </header>
-            <div class="card-content">
-
-            </div>
-            <footer class="card-footer">
-
-            </footer>
+    
+    <nav class ="navbar navbar-dark bg-dark text-white">
+        <div class="container-fluid">
+            <h1 class = "navbar-brand text-white">
+                JavaScript Quiz
+            </h1>
+            <div class="timer">Timer: 0</div>
+            <form class="d-flex">
+                <button id="toggle-scores" class="btn btn-outline-success">
+                    View High Scores
+                </button>
+            </form>
         </div>
-        <aside></aside>
-    </main>
+    </nav>
+    <div class="vh-100 d-flex bg-dark align-items-center ">
+
+        <!-- Add classes to use sizing properties to make this row run the full width of the page and use flex properties to center justify content -->
+        <section class="row w-100 justify-content-center">
+    
+          <div class="col-10 col-md-6 col-lg-5" align="center">
+            <div>
+                <div class="card"></div>
+            </div>
+        </main>
+    </div>
+
     <footer>
         Made with Love by Ryan Schubert
     </footer>

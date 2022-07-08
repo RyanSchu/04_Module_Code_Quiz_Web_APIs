@@ -2,6 +2,7 @@
 // get the card element which will store the question contents
 var card = document.querySelector(".card")
 var timer = document.querySelector(".timer")
+var HSButton = document.querySelector("#toggle-scores")
 var index = 0
 var startScore = 0
 var timeLeft=80
@@ -42,7 +43,6 @@ function renderCard(card,question) {
     renderChoices(card,question)
     renderButton(card,question)
     card.setAttribute("data-index",index)
-    index++
     return
 }   
 
@@ -68,10 +68,12 @@ function renderChoices(card,question) {
         choice.setAttribute("type","radio")
         choice.setAttribute("name","choice")
         choice.setAttribute("id","choice" + i)
+        choice.setAttribute("class","btn-check")
         choice.setAttribute("value",question.choices[i])
         choiceForm.appendChild(choice)
         let label = document.createElement("label")
         label.setAttribute("for", "choice" + i)
+        label.setAttribute("class", "btn btn-outline-secondary")
         label.textContent = question.choices[i]
         choiceForm.appendChild(label)
     }
@@ -87,6 +89,7 @@ function renderButton(card,question) {
     if (question.buttonContent === "Start Quiz"){
         
         cardButton.addEventListener("click",function(){
+            index++
             renderCard(card,questions[index])
             startTimer()
         }) 
@@ -110,11 +113,14 @@ function renderButton(card,question) {
 // this will be attached to the button event listener
 function scoreQuestion(question){
     let answer =  document.querySelector("input:checked")
+    console.log(answer.getAttribute('value'))
+    console.log(question.solution)
     if (answer.getAttribute('value') === question.solution) {
         startScore++
     } else {
         timeLeft-=10
     }
+    index++
 }
 
 // create score tracker element
@@ -166,13 +172,15 @@ function renderScoreboard(card) {
     })
     let scoreBoard = document.createElement("ol")
     scoreBoard.setAttribute("type","1")
+    scoreBoard.setAttribute("class","list-group list-group-numbered")
     let scores = JSON.parse(localStorage.getItem("scores"))
     scores.sort((a, b) => (b.score - a.score))
     // code to grab 
-    for (i =0; i < scores.length; i++){
+    for (i =0; i < scores.length && i < 10 ; i++){
         // console.log(scores[i])
-        item = document.createElement("li")
-        item.textContent = scores[i].name  + " "  + scores[i].score
+        let item = document.createElement("li")
+        item.setAttribute("class","list-group-item d-flex align-items-start")
+        item.textContent = scores[i].name  + " with a score of "  + scores[i].score
         scoreBoard.appendChild(item)
     }
     card.appendChild(resetButton)
@@ -180,7 +188,6 @@ function renderScoreboard(card) {
 }
 
 function startTimer() {
-    let timeLeft = 80
     let timeInterval = setInterval(function() {
         timeLeft--
         timer.textContent = "Timer: " + timeLeft
@@ -200,12 +207,17 @@ function stopTimer() {
 // will consider the welcome page a special case of question for the purposes of easy rendering
 var questions = [
     new Question(title="",question="Welcome to the quiz",choices=[],solution=null,isStart=true,buttonContent="Start Quiz"),
-    // new Question(title="Question 1/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
-    // new Question(title="Question 2/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
-    // new Question(title="Question 3/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
-    new Question(title="Question 4/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Continue"),
-    new Question(title="Question 5/5",question="Hello",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Finish Quiz")
+    new Question(title="Question 1/5",question="JavaScript is an example of",choices=["coffee if it were a font","A high level programming language","a very fun way to spend your time","obscure and rarely useful"],solution="A high level programming language",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 2/5",question="DOM is short for",choices=["Dear Ole Mom","Dead on, mate","Department of Magic","Document Object Model"],solution="Document Object Model",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 3/5",question="in javascript, what takes precedence: global or local scope?",choices=["Global","Local"],solution="Local",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 4/5",question="bootstrap refers to",choices=["What you pull yourself up by","A front end framework designed to simplify styling webpages","a reptile endemic to south-east asia"],solution="A front end framework designed to simplify styling webpages",isStart=false,buttonContent="Continue"),
+    new Question(title="Question 5/5",question="I can't be bothered to write this last question. It's A.",choices=["A","B","C","D"],solution="A",isStart=false,buttonContent="Finish Quiz")
 ]
 
 var timerID = renderCard(card,questions[0]) 
+HSButton.addEventListener("click", function(){
+    event.preventDefault()
+    stopTimer()
+    renderScoreboard(card)
+})
 // console.log(timerID)

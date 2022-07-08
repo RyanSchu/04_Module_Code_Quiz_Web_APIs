@@ -5,9 +5,23 @@
     --light-purple: #9D4EDD;
 }
 
-/* restyle some basic elements after reset */
-h1 {
-    font-size: 7rem;
-  }
 
+#container{
 
+}
+
+.card {
+    margin: auto;
+    float: none; 
+    margin-bottom: 10px; 
+}
+label {
+    display: block;
+    margin-bottom:1rem;
+    margin-right:0.5rem;
+    width: 100%;
+}
+
+footer {
+    text-align: center;
+}
